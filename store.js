@@ -9,7 +9,22 @@ const init = async () => (
     })
   })
 )
+const uuid = require('uuid')
 
+const addTask = async ({ title }) => (
+  new Promise((resolve, reject) => {
+    const gen = storage.TableUtilities.entityGenerator
+    const task = {
+      PartitionKey: gen.String('task'),
+      RowKey: gen.String(uuid.v4()),
+      title
+    }
+
+    service.insertEntity(table, task, (error) => {
+      !error ? resolve() : reject()
+    })
+  })
+)
 module.exports = {
-  init
+  init, addTask
 }

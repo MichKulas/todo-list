@@ -1,6 +1,7 @@
 const path = require('path')
 const Koa = require('koa')
 const serve = require('koa-static')
+const router = require('./store').init()
 
 
 const app = new Koa()
@@ -14,8 +15,9 @@ app.use(userRoutes.routes())
 const taskRoutes = require('./routes/tasks')
 app.use(taskRoutes.routes())
 
+const parse = require('koa-bodyparser')
+app.use(parse())
+
 app.listen(port)
 
 console.log('App is listening at http://127.0.0.1:3000')
-
-require('./store').init()
